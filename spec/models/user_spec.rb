@@ -26,5 +26,15 @@ RSpec.describe User, type: :model do
       # Assert
       expect(user.root?).to be(true)
     end
+
+    it "should not allow duplicate email addresses" do
+      # Arrange
+      User.create!(email: email)
+
+      # Act/Assert
+      expect {
+        User.create!(email: email)
+      }.to raise_error(ActiveRecord::RecordInvalid, /Email has already been taken/i)
+    end
   end
 end
