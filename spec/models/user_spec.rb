@@ -1,9 +1,9 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe User, type: :model do
-  describe "creation" do
-    let(:email) { "foo@example.com" }
+  let(:email) { "foo@example.com" }
 
+  describe "creation" do
     it "cannot be created without an email address" do
       # Act/Assert
       expect {
@@ -35,6 +35,19 @@ RSpec.describe User, type: :model do
       expect {
         User.create!(email: email)
       }.to raise_error(ActiveRecord::RecordInvalid, /Email has already been taken/i)
+    end
+  end
+
+  describe "details" do
+    let(:user) { User.create!(email: email) }
+
+    it "should tell me the user's email domain" do
+      # Arrange
+      email_domain = "example.com"
+      user = User.create!(email: "foo@#{email_domain}")
+
+      # Act/Assert
+      expect(user.email_domain).to eq(email_domain)
     end
   end
 end
